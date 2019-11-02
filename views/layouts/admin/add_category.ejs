@@ -1,0 +1,26 @@
+<%- include('../adminheader.ejs') %>
+
+<h2 class="page-title">Add a Category</h2>
+<a href="/admin/category" class="btn btn-primary">Back to all Categories</a>
+<br>
+<hr>
+
+<form method="POST" action="/admin/category/add_category">
+
+   <div class="form-group">
+
+    <label for="title" class="for">Title</label>
+    <input type="text" class="form-control" required name="title" value="<%= title %>" placeholder="Title">
+
+    <label for="slug" class="for">Slug</label>
+    <input type="text" class="form-control" required name="slug" value="<%= slug %>" placeholder="Slug">
+
+    <br>
+
+    <button class="btn btn-lg btn-light" type="submit">Invia</button>
+
+   </div>
+
+</form>
+
+<%- include('../adminfooter.ejs') %>

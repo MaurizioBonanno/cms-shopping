@@ -1,0 +1,71 @@
+<%- include('../adminheader.ejs') %>
+
+<h2 class="page-title">Products</h2>
+<a href="/admin/products/add-product" class="btn btn-primary">Add a new Product </a>
+<br>
+<hr>
+<% if ( count > 0) {%>
+<table class="table table-striped sorting">
+
+    <thead>
+        <tr class="home">
+            <th>Product</th>
+            <th>Price</th>
+            <th>Category</th>
+            <th>Product Image</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    <% products.forEach((product)=>{ %>
+        <tr>
+            <td><%= product.title %></td>
+            <td>€ <%=parseFloat(product.price).toFixed(2) %></td>
+            <td><%= product.category %></td>
+            <td><% if(product.image == ""){ %>
+            No image
+            <% } else {%>
+                <img src="/images/<%= product._id %>/<%= product.image %>" class="minimage" >
+                <%} %>
+            </td>
+
+            <td><a href="/admin/category/edit_product/<%= product._id %>">Edit</a></td>
+            
+             <td><a class="confirmDeletion" href="/admin/category/delete-product/<%= product._id %>">Delete</a></td>
+
+            
+        </tr>
+    <% }) %>
+    </tbody>
+</table>
+<%} else {%>
+    
+    <h3 class="text-center">Non ci sono Prodotti</h3>
+    
+<% } %>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+    $jq= jQuery.noConflict();
+    $jq(document).ready(function(){
+
+        $jq('tbody').sortable({
+
+            items: "tr:not('.home')",
+            placeholder: "ui-state-hightlight",
+            update: function () {
+                
+                var url = "/admin/pages/reorder-pages";
+                console.log('in update, url:',url);
+                var ids = $jq('tbody').sortable("serialize");
+                $jq.post(url,ids);
+            }
+    
+        });
+
+    });
+
+</script>
+
+<%- include('../adminfooter.ejs') %>

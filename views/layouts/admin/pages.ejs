@@ -1,0 +1,57 @@
+<%- include('../adminheader.ejs') %>
+
+<h2 class="page-title">Add a Page</h2>
+<a href="/admin/pages/add_page" class="btn btn-primary">Add a new page</a>
+<br>
+<hr>
+
+<table class="table table-striped sorting">
+
+    <thead>
+        <tr class="home">
+            <th>Title</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    <% pages.forEach((page)=>{ %>
+        <tr id="id_<%=page._id%>" class="<%=page.slug %>">
+            <td><%= page.title %></td>
+
+            <td><a href="/admin/pages/edit_page/<%= page.slug %>">Edit</a></td>
+            <% if(page.slug=="home"){ %>
+                <td></td>
+            <% } else { %>
+               <td><a class="confirmDeletion" href="/admin/pages/delete-page/<%= page._id %>">Delete</a></td>
+            <% } %>
+            
+        </tr>
+    <% }) %>
+    </tbody>
+</table>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+    $jq= jQuery.noConflict();
+    $jq(document).ready(function(){
+
+        $jq('tbody').sortable({
+
+            items: "tr:not('.home')",
+            placeholder: "ui-state-hightlight",
+            update: function () {
+                
+                var url = "/admin/pages/reorder-pages";
+                console.log('in update, url:',url);
+                var ids = $jq('tbody').sortable("serialize");
+                $jq.post(url,ids);
+            }
+    
+        });
+
+    });
+
+</script>
+
+<%- include('../adminfooter.ejs') %>

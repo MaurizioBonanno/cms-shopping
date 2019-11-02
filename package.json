@@ -1,0 +1,25 @@
+{
+  "name": "shopping",
+  "version": "1.0.0",
+  "description": "un sito in node con carrello e pgamento paypal",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Maurizio Bonanno",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.6-alpha.6",
+    "express-messages": "^1.0.1",
+    "express-session": "^1.17.0",
+    "express-validator": "^3.2.1",
+    "fs-extra": "^8.1.0",
+    "mkdirp": "^0.5.1",
+    "mongoose": "^5.7.5",
+    "resize-img": "^2.0.0"
+  }
+}

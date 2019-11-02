@@ -1,0 +1,55 @@
+<%- include('../adminheader.ejs') %>
+
+<h2 class="page-title">Categories</h2>
+<a href="/admin/category/add_category" class="btn btn-primary">Add a new Category </a>
+<br>
+<hr>
+
+<table class="table table-striped sorting">
+
+    <thead>
+        <tr class="home">
+            <th>Title</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+    </thead>
+    <tbody>
+    <% categories.forEach((category)=>{ %>
+        <tr id="id_<%=category._id%>" class="<%=category.slug %>">
+            <td><%= category.title %></td>
+
+            <td><a href="/admin/category/edit_category/<%= category._id %>">Edit</a></td>
+            
+             <td><a class="confirmDeletion" href="/admin/category/delete-category/<%= category._id %>">Delete</a></td>
+
+            
+        </tr>
+    <% }) %>
+    </tbody>
+</table>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+<script>
+    $jq= jQuery.noConflict();
+    $jq(document).ready(function(){
+
+        $jq('tbody').sortable({
+
+            items: "tr:not('.home')",
+            placeholder: "ui-state-hightlight",
+            update: function () {
+                
+                var url = "/admin/pages/reorder-pages";
+                console.log('in update, url:',url);
+                var ids = $jq('tbody').sortable("serialize");
+                $jq.post(url,ids);
+            }
+    
+        });
+
+    });
+
+</script>
+
+<%- include('../adminfooter.ejs') %>

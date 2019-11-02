@@ -1,0 +1,29 @@
+<%- include('../adminheader.ejs') %>
+
+<h2 class="page-title">Add a Page</h2>
+<a href="/admin/pages" class="btn btn-primary">Back to all pages</a>
+<br>
+<hr>
+
+<form method="POST" action="/admin/pages/add_page">
+
+   <div class="form-group">
+
+    <label for="title" class="for">Title</label>
+    <input type="text" class="form-control" required name="title" value="<%= title %>" placeholder="Title">
+
+    <label for="slug" class="for">Slug</label>
+    <input type="text" class="form-control" required name="slug" value="<%= slug %>" placeholder="Slug">
+
+    <label for="content" class="for">Content</label>
+    <textarea class="form-control" required name="content" id="ta" placeholder="Content"></textarea>
+
+    <br>
+
+    <button class="btn btn-lg btn-light" type="submit">Invia</button>
+
+   </div>
+
+</form>
+
+<%- include('../adminfooter.ejs') %>

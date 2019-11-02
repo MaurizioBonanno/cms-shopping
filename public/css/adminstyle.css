@@ -1,0 +1,12 @@
+.sorting tr:not(.home){
+    cursor: pointer;
+}
+
+.ui-state-hightlight {
+  border: 1px dashed #ccc;
+}
+
+.minimage {
+max-width: 100px;
+max-height: 100px;
+}
