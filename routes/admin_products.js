@@ -132,6 +132,51 @@ router.post('/add-products',(req,res)=>{
 
 });
 
+router.get('/edit_product/:id',(req,res)=>{
+    var errors;
+
+    //se ci sono errori in sessione
+    if(req.session.errors)
+        errors = req.session.errors;
+    req.session.errors = null;
+
+    Categories.find((err, categories)=> {
+        
+        Products.findById(req.params.id, (err, p)=>{
+             if(err){
+                 console.log(err);
+                 res.redirect('/admin/products');
+             }else{
+                 var galleryDir = "public/images/"+p._id+"/";//directory con le immagini
+                 var galleryImages = null;
+
+                 fs.readdir(galleryDir, (err, files)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        galleryImages = files;
+
+                        res.render('layouts/admin/edit_products',{
+                            id: p._id,
+                            title: p.title,
+                            errors: errors,
+                            description: p.desc,
+                            categories: categories,
+                            category: p.category.replace(/\s+/g,'-').toLowerCase(),
+                            price: parseFloat(p.price).toFixed(),
+                            image: p.image,
+                            galleryImages: galleryImages
+                        });
+                    }
+                 });
+             }
+        });
+
+    });
+
+});
+
+
 
 
 

@@ -22,17 +22,17 @@
         <tr>
             <td><%= product.title %></td>
             <td>€ <%=parseFloat(product.price).toFixed(2) %></td>
-            <td><%= product.category %></td>
+            <td><%= product.category  %></td>
             <td><% if(product.image == ""){ %>
             No image
             <% } else {%>
-                <img src="/images/<%= product._id %>/<%= product.image %>" class="minimage" >
+                <img src="/images/<%= product._id %>/<%= product.image %>" class="minimage" style="width: 100px; height: 100px" >
                 <%} %>
             </td>
 
-            <td><a href="/admin/category/edit_product/<%= product._id %>">Edit</a></td>
+            <td><a href="/admin/products/edit_product/<%= product._id %>">Edit</a></td>
             
-             <td><a class="confirmDeletion" href="/admin/category/delete-product/<%= product._id %>">Delete</a></td>
+             <td><a class="confirmDeletion" href="/admin/products/delete-product/<%= product._id %>">Delete</a></td>
 
             
         </tr>
