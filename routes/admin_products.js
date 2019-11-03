@@ -179,12 +179,14 @@ router.get('/edit_product/:id',(req,res)=>{
 //POST edit-product
 router.post('/edit-products/:id',(req,res)=>{
             //prendo il nome dell'immagine questo è solo il nome e non l'immagine
-            var imageFile = typeof req.files.image !== "undefined" ? req.files.image.name : "";// il nome dell'immagine
-
+            var imageFile ="";
+            if(req.files != null){
+              var imageFile = typeof req.files.image !== "undefined" ? req.files.image.name : "";// il nome dell'immagine
+            }
             req.checkBody('title','Il title non può essere nullo').notEmpty();
             req.checkBody('description','descrizione non può essere nullo').notEmpty();
             req.checkBody('price','Il prezzo non può essere nullo').notEmpty();
-            req.checkBody('image','Devi uplodare un immagine').isImage(imageFile);
+            //req.checkBody('image','Devi uplodare un immagine').isImage(imageFile);
 
             var title= req.body.title;
             var slug=title.replace(/\s+/g, '-').toLowerCase();
@@ -192,6 +194,9 @@ router.post('/edit-products/:id',(req,res)=>{
             var price = req.body.price;
             var category = req.body.category;
             var pimage = req.body.pimage;
+
+            //stampo la categoria per vedere se la prende 
+            console.log('categoria:'+req.body.category);
             
             var id= req.params.id;
 
@@ -217,7 +222,7 @@ router.post('/edit-products/:id',(req,res)=>{
                             p.slug = slug;
                             p.description = desc;
                             p.price = parseFloat(price).toFixed(2);
-                            p.categories = category;
+                            p.category = category;
                             if(imageFile != ""){
                                 p.image = imageFile;
                             }
@@ -253,6 +258,28 @@ router.post('/edit-products/:id',(req,res)=>{
 
                 });
             }
+});
+
+
+//POST product gallery
+router.post('/products-gallery/:id',(req,res)=>{
+
+    var productImage = req.files.file;
+    var id = req.params.id;
+    var path= "public/images/"+id+"/gallery/"+req.files.file.name;
+    var thumbPath ="public/images/"+id+"/gallery/thumbs/"+req.files.file.name;
+    productImage.mv(path,(err)=>{
+        if(err)
+            console.log(err);
+
+        //Andiamo nel resize
+        resizeImg(fs.readFileSync(path),{ width: 100, height: 100}).then((buf)=>{
+             fs.writeFileSync(thumbPath,buf);
+        });
+    });
+
+    res.sendStatus(200);
+
 });
 
 

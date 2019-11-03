@@ -18,33 +18,33 @@
 
     <div class="form-group">
         <label for="category" class="for">Category</label>
-        <select name="category" class="form-control">
+        <select name="category" id="category" class="form-control">
         <% categories.forEach((cat)=> { %>
            <option value="<%= cat.slug %>"
 
                <% if(cat.slug == category) { %>
-        selected="selected"
-                <%}%> 
-           >
-            <%= cat.title %></option> 
-        <%})  %>
-        </select>
+                 selected
+               <%}%> 
+                    >
+                  <%= cat.title %></option> 
+              <%})  %>
+         </select>
     </div>
 
     <div class="form-group">
             <label for="" class="for">Current Image</label>
             <% if(image=="") { %>
-             <img src="images/noimage.png">
-            <%} else {%>
-                <img src="/images/<%= id %>/<%= image %>" class="minimage" style="width: 100px; height: 100px" >
+             <img src="/images/noimage.png">
+              <%} else {%>
+             <img src="/images/<%= id %>/<%= image %>" class="minimage" style="width: 100px; height: 100px" >
             <% } %>
     </div>
 
     <div class="form-group">
         <label >Image</label>
-        <input type="file" class="form-control" name="image" id="img">
+        <input type="file" class="form-control" name="image" id="img" file="<%= image %>">
         <br>
-        <img src="#" id="imagePreview">
+        <img src="/images/noimage.png" id="imagePreview" style="max-width: 100px;max-height:100px;">
     </div>
 
     <div class="form-group">
@@ -55,9 +55,9 @@
 
     <br>
 
-    <input type="hidden" name="pimage" value ="<%= image %>">
+    <input  type="hidden" name="pimage" value ="<%= image %>">
 
-    <button class="btn btn-lg btn-light" type="submit">Invia</button>
+    <button class="btn btn-lg btn-primary" type="submit">Invia</button>
 
 
 
@@ -76,7 +76,10 @@
 
 <br><br>
 <form action="/admin/products/products-gallery/<%= id %>" method="POST" enctype="multipart/form-data" class="dropzone" id="dropzoneForm">
-
+<div class="fallback">
+    <input type="file" name="file" multiple>
+    <input type="submit" value="Upload">
+</div>
 </form>
 
 
@@ -107,9 +110,9 @@ Dropzone.options.dropzoneForm = {
     acceptedFiles : "image/*",
     init: function(){
         this.on("queuecomplete", function(file){
-           setTimeout(function(){
+             setTimeout(function(){
                location.reload();
-           },1000)
+           },2000)
         })
     }
 }
