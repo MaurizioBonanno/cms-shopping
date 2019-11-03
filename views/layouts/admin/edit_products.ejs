@@ -20,12 +20,12 @@
         <label for="category" class="for">Category</label>
         <select name="category" class="form-control">
         <% categories.forEach((cat)=> { %>
-           <option value="<%= cat.slug %>">
+           <option value="<%= cat.slug %>"
 
                <% if(cat.slug == category) { %>
         selected="selected"
                 <%}%> 
-
+           >
             <%= cat.title %></option> 
         <%})  %>
         </select>

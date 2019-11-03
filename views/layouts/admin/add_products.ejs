@@ -20,7 +20,7 @@
         <label for="category" class="for">Category</label>
         <select name="category" class="form-control">
         <% categories.forEach((cat)=> { %>
-           <option value="<%= cat._id %>"><%= cat.title %></option> 
+           <option value="<%= cat.slug %>"><%= cat.title %></option> 
         <%})  %>
         </select>
     </div>

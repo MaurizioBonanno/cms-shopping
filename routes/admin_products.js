@@ -176,6 +176,84 @@ router.get('/edit_product/:id',(req,res)=>{
 
 });
 
+//POST edit-product
+router.post('/edit-products/:id',(req,res)=>{
+            //prendo il nome dell'immagine questo è solo il nome e non l'immagine
+            var imageFile = typeof req.files.image !== "undefined" ? req.files.image.name : "";// il nome dell'immagine
+
+            req.checkBody('title','Il title non può essere nullo').notEmpty();
+            req.checkBody('description','descrizione non può essere nullo').notEmpty();
+            req.checkBody('price','Il prezzo non può essere nullo').notEmpty();
+            req.checkBody('image','Devi uplodare un immagine').isImage(imageFile);
+
+            var title= req.body.title;
+            var slug=title.replace(/\s+/g, '-').toLowerCase();
+            var desc=req.body.description;
+            var price = req.body.price;
+            var category = req.body.category;
+            var pimage = req.body.pimage;
+            
+            var id= req.params.id;
+
+            const errors = req.validationErrors();
+
+            if(errors){
+                req.session.errors = errors;
+                res.redirect('/admin/products/edit-product/'+id);
+            }else{
+                //controlla che non ci sia lo stesso titolo presumo, controlla tutti gli slug con id differente da quello passato
+                Products.findOne({slug: slug, _id:{'$ne':id}}, (err,p)=>{
+                    if(err) console.log(err);
+
+                    if(p){
+                        req.flash('danger', 'Il titolo del prodotto è già esistente scegline un altro');
+                        res.redirect('/admin/products/edit-product/'+id);
+                    }else{ //se non c'è un altro slug uguale
+                         Products.findById(id,(err,p)=>{ //recupero il prodotto
+                            if(err)
+                                console.log(err);
+                            
+                            p.title = title;
+                            p.slug = slug;
+                            p.description = desc;
+                            p.price = parseFloat(price).toFixed(2);
+                            p.categories = category;
+                            if(imageFile != ""){
+                                p.image = imageFile;
+                            }
+
+                            p.save((err)=>{
+                                if(err)
+                                    console.log(err);
+                                
+                                if(imageFile != ""){
+                                    if(p.image !=""){//se esiste una vecchia immagine
+                                        //rimuovo la vecchia immagine
+                                        fs.remove('public/images/'+id+"/"+pimage, (err)=>{
+                                            if(err)
+                                                console.log(err);
+                                        });
+                                    }
+                                    //recupero il file immagine
+                                    var productImage = req.files.image;
+                                    //stabilisco il percorso dove scriverlo
+                                    var path = "public/images/"+id+"/"+imageFile;
+                                    //metto il file immagine dentro la directory
+                                    productImage.mv(path,(err)=>{
+                                       return console.log(err);
+                                    });
+
+                                }
+
+                                req.flash('succes','prodotto modificato correttamente');
+                                res.redirect('/admin/products');
+                            });
+                         });
+                    }
+
+                });
+            }
+});
 
 
 
